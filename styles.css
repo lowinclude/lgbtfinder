@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+    font-family: "Space Mono", monospace;
+}
+
+.leaflet-container {
+    background: #143d6b;
+    outline: 0;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background: #08080a;
+    color: #fff;
+}
+#map {
+    flex: 1;
+}
+#sidebar {
+    width: 300px;
+    background: #08080a;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+.marker-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+.marker-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #ccc;
+    margin-bottom: 10px;
+    padding: 12px 10px;
+    background-color: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.marker-item.active {
+    background-color: #444;
+    color: #fff;
+}
+.marker-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+.remove-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0;
+    height: 28px;
+    text-align: center;
+    padding: 0px 10px;
+    background-color: rgba(104, 24, 41, 0.5);
+    border: 1px solid #681829;
+}
+.remove-btn:hover {
+    background-color: rgba(104, 24, 41, 0.8);
+}
+
+input[type="text"], input[type="password"] {
+    padding: 12px 10px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+button {
+    padding: 12px 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #555;
+}
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+    background-color: #444 !important;
+    color: #fff !important;
+    border: none !important;
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+.leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover {
+    background-color: #555 !important;
+}
+
+#search {
+    margin-top: 10px;
+}
+
+.leaflet-bottom {
+    visibility: hidden !important;
+}
+
+.leaflet-right {
+    visibility: hidden !important;
+}
