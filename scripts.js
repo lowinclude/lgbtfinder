@@ -3,11 +3,10 @@ let firebaseCode = '';
 let markers = [];
 let leafletMarkers = {};
 
-L.tileLayer('map/{z}-{x}_{y}.png', {
-    maxZoom: 7,
-    minZoom: 2,
-    noWrap: true
-}).addTo(map);
+const imageUrl = 'sateline.jpg';
+const imageBounds = [[-90, -180], [90, 180]];
+
+L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 const customIcon = L.icon({
     iconUrl: 'hater.png',
@@ -22,7 +21,7 @@ window.onload = () => {
         firebaseCode = savedCode;
         loadMarkersFromFirebase(savedCode);
     }
-    map.setView(new L.LatLng(73.22082129382729, -128.66182587092885), 6);
+    map.setView(new L.LatLng(-28.27470756925772, -27.010640094552915), 6);
 };
 
 document.getElementById('authButton').addEventListener('click', () => {
