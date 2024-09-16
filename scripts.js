@@ -3,7 +3,7 @@ let firebaseCode = '';
 let markers = [];
 let leafletMarkers = {};
 
-const imageUrl = 'sateline.jpg';
+const imageUrl = 'atlas.png';
 const imageBounds = [[-90, -180], [90, 180]];
 
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
