@@ -10,8 +10,8 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 const customIcon = L.icon({
     iconUrl: 'hater.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32]
+    iconSize: [16, 16],
+    iconAnchor: [8, 16]
 });
 
 window.onload = () => {
@@ -22,7 +22,16 @@ window.onload = () => {
         loadMarkersFromFirebase(savedCode);
     }
     map.setView(new L.LatLng(-28.27470756925772, -27.010640094552915), 6);
+
+    const newIcon = L.icon({
+        iconUrl: 'start.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32]
+    });
+    const newMarker = L.marker([-28.27470756925772, -27.010640094552915], { icon: newIcon }).addTo(map);
+    newMarker.bindPopup("Новая метка");
 };
+
 
 document.getElementById('authButton').addEventListener('click', () => {
     firebaseCode = document.getElementById('firebaseCode').value.trim();
@@ -36,6 +45,7 @@ document.getElementById('authButton').addEventListener('click', () => {
 
 function loadMarkersFromFirebase(code) {
     const url = `https://interactive-event-${code}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
+    // const url = `https://interactive-test-${code}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
 
     fetch(url)
         .then(response => response.json())
@@ -58,6 +68,7 @@ function saveMarkersToFirebase() {
     }
 
     const url = `https://interactive-event-${firebaseCode}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
+    // const url = `https://interactive-test-${firebaseCode}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
 
     fetch(url, {
         method: 'PUT',
@@ -110,14 +121,17 @@ function updateMarkerList() {
 }
 
 function deleteMarker(marker) {
-    markers = markers.filter(m => m.name !== marker.name);
-    if (leafletMarkers[marker.name]) {
-        map.removeLayer(leafletMarkers[marker.name]);
-        delete leafletMarkers[marker.name];
+    if (confirm(`Вы уверены, что хотите удалить метку "${marker.name}"?`)) {
+        markers = markers.filter(m => m.name !== marker.name);
+        if (leafletMarkers[marker.name]) {
+            map.removeLayer(leafletMarkers[marker.name]);
+            delete leafletMarkers[marker.name];
+        }
+        saveMarkersToFirebase();
+        updateMarkerList();
     }
-    saveMarkersToFirebase();
-    updateMarkerList();
 }
+
 
 map.on('click', (e) => {
     if (!firebaseCode) {
