@@ -61,30 +61,33 @@ function loadMarkersFromFirebase(code) {
         });
 }
 
-function saveMarkersToFirebase() {
+async function saveMarkersToFirebase() {
     if (!firebaseCode) {
         alert('Сначала авторизуйтесь!');
         return;
     }
 
     const url = `https://interactive-event-${firebaseCode}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
-    // const url = `https://interactive-test-${firebaseCode}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
 
-    fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(markers)
-    })
-        .then(response => response.json())
-        .then(() => {
-            console.log('Метки успешно сохранены.');
-        })
-        .catch(error => {
-            console.error('Ошибка сохранения меток:', error);
-            alert('Ошибка при сохранении меток.');
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(markers)
         });
+
+        if (response.ok) {
+            console.log('Метки успешно сохранены.');
+        } else {
+            throw new Error('Ошибка при сохранении меток.');
+        }
+
+    } catch (error) {
+        console.error('Ошибка сохранения меток:', error);
+        alert('Ошибка при сохранении меток.');
+    }
 }
 
 function addMarkersToMap() {
@@ -133,7 +136,7 @@ function deleteMarker(marker) {
 }
 
 
-map.on('click', (e) => {
+map.on('click', async (e) => {
     if (!firebaseCode) {
         alert('Сначала авторизуйтесь!');
         return;
@@ -145,19 +148,43 @@ map.on('click', (e) => {
         return;
     }
 
-    const marker = {
-        name: markerName,
-        latlng: e.latlng
-    };
-
-    const leafletMarker = L.marker(e.latlng, { icon: customIcon }).addTo(map);
-    leafletMarker.bindPopup(markerName);
-
-    markers.push(marker);
-    leafletMarkers[markerName] = leafletMarker;
-    saveMarkersToFirebase();
-    updateMarkerList();
+    await loadMarkersFromFirebaseAndAddMarker(e.latlng, markerName);
 });
+
+async function loadMarkersFromFirebaseAndAddMarker(latlng, markerName) {
+    const url = `https://interactive-event-${firebaseCode}-default-rtdb.europe-west1.firebasedatabase.app/markers.json`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        markers = data ? Object.values(data) : [];
+
+        if (markers.some(marker => marker.name === markerName)) {
+            alert('Метка с таким именем уже существует.');
+            return;
+        }
+
+        const newMarker = {
+            name: markerName,
+            latlng: latlng
+        };
+
+        markers.push(newMarker);
+
+        const leafletMarker = L.marker(latlng, { icon: customIcon }).addTo(map);
+        leafletMarker.bindPopup(markerName);
+        leafletMarkers[markerName] = leafletMarker;
+
+        await saveMarkersToFirebase();
+
+        updateMarkerList();
+
+    } catch (error) {
+        console.error('Ошибка при загрузке меток:', error);
+        alert('Не удалось загрузить метки перед добавлением.');
+    }
+}
 
 function highlightMarker(name) {
     const items = document.querySelectorAll('.marker-item');
