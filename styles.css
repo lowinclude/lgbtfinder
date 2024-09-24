@@ -5,13 +5,13 @@
 }
 
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 0px;
     background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: #1f1f26;
-    border-radius: 10px;
+    border-radius: 2px;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,9 +34,9 @@ body {
     flex: 1;
 }
 #sidebar {
-    width: 300px;
-    background: #08080a;
-    padding: 10px;
+    width: 320px;
+    background: #171717;
+    padding: 30px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -53,10 +53,14 @@ body {
     cursor: pointer;
     color: #ccc;
     margin-bottom: 10px;
-    padding: 12px 10px;
-    background-color: rgba(255,255,255,0.05);
-    border-radius: 3px;
+    /* padding: 12px 10px; */
+    padding: 8px 16px;
+    /* background-color: rgba(255,255,255,0.05); */
+    background-color: #1f1f1f;
+    /* border-radius: 3px; */
+    border-radius: .375rem;
     font-size: 14px;
+    border: solid 1px hsl(0deg 0% 18% / 1)
 }
 
 .marker-item.active {
@@ -83,24 +87,42 @@ body {
 }
 
 input[type="text"], input[type="password"] {
-    padding: 12px 10px;
-    border: none;
-    border-radius: 4px;
+    /* padding: 12px 10px; */
+    padding: .5rem .75rem;
+    /* border: none; */
+    border: solid 1px hsl(0deg 0% 22.4% / 1);
+    border-radius: .375rem;;
     outline: none;
-    background: rgba(255,255,255,0.05);
+    /* background: rgba(255,255,255,0.05); */
+    background-color: hsl(0deg 0% 98%  / .026);
     color: #fff;
+    font-size: .875rem;
+    line-height: 1.25rem;
 }
+
+input[type="text"]:hover, input[type="password"]:hover {
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(0, 0, 0, .05);
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(0, 0, 0, .05);
+}
+
 button {
-    padding: 12px 10px;
+    padding: 8px 16px;
     margin-top: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #444;
+    /* border-radius: 4px; */
+    border-radius: .375rem;
+    background-color: hsl(154.9deg 100% 19.2% / 1);
+    border: solid 1px hsl(153.1deg 60.2% 52.7% / .3);
     color: #fff;
     cursor: pointer;
+    font-size: 14px;
 }
+
 button:hover {
-    background-color: #555;
+    background-color: hsl(153.1deg 60.2% 52.7% / .5);
+    border-color: hsl(153.1deg 60.2% 52.7% / 1);
 }
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
     background-color: #444 !important;
